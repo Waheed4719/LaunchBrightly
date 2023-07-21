@@ -1,8 +1,11 @@
-import { ref, Ref, computed } from '@vue/reactivity';
+// useFeaturesAPI.ts
+
+import { ref, Ref } from '@vue/reactivity';
 import axios from 'axios';
 import { usePagination } from './usePagination';
 import { FeatureItem, Edition, Feature } from '@/types';
 import { API_URL } from '@/config';
+import { useSorting } from './useSorting';
 
 export function useFeaturesAPI(
   currentPage: Ref<number>,
@@ -15,38 +18,9 @@ export function useFeaturesAPI(
   const sortKey = ref<string | null>(null);
   const sortOrder = ref<string | null>(null);
 
-  const sortFeatures = (payload: { sortKey: string; sortOrder: string }) => {
-    sortKey.value = payload.sortKey;
-    sortOrder.value = payload.sortOrder;
-  };
-
-  const sortedFeatures = computed(() => {
-    let sortingFunction: ((a: any, b: any) => number) | null = null;
-
-    if (sortKey.value === 'Id') {
-      sortingFunction = (a, b) => a.id - b.id;
-    } else if (sortKey.value === 'Name') {
-      sortingFunction = (a, b) => a.name.localeCompare(b.name);
-    } else if (sortKey.value === 'Description') {
-      sortingFunction = (a, b) => a.description.localeCompare(b.description);
-    } else if (sortKey.value === 'Editions') {
-      sortingFunction = (a, b) => a.editions - b.editions;
-    }
-
-    const sortedData = sortingFunction
-      ? features.value.slice().sort(sortingFunction)
-      : features.value;
-
-    if (sortOrder.value === 'DESC') {
-      sortedData.reverse();
-    }
-
-    return sortedData;
-  });
-
   const { paginatedArray, numberOfPages } = usePagination<FeatureItem>({
     rowsPerPage,
-    arrayToPaginate: sortedFeatures,
+    arrayToPaginate: useSorting(features, sortKey, sortOrder),
     currentPage,
   });
 
@@ -71,10 +45,18 @@ export function useFeaturesAPI(
       featuresAreLoading.value = false;
     }
   };
+
+  const sortFeatures = (payload: { sortKey: string; sortOrder: string }) => {
+    sortKey.value = payload.sortKey;
+    sortOrder.value = payload.sortOrder;
+  };
+
   console.log('here', paginatedArray.value);
   return {
     features: paginatedArray,
     sortFeatures,
+    sortKey,
+    sortOrder,
     loadFeatures,
     featuresAreLoading,
     numberOfPages,

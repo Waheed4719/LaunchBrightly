@@ -35,6 +35,8 @@ const {
   loadFeatures,
   numberOfPages,
   sortFeatures,
+  sortKey,
+  sortOrder,
 } = useFeaturesAPI(currentPage, rowsPerPage);
 
 onMounted(async () => {

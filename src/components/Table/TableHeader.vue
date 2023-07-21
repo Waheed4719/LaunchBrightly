@@ -8,7 +8,7 @@
         scope="col"
         :class="[
           getClassForHeader(header.name),
-          'px-6 py-3 font-semibold tracking-wide',
+          'px-6 py-3 font-semibold tracking-wide cursor-pointer',
         ]"
         @click="sortTable(header.name)">
         <div class="flex items-center">
@@ -58,7 +58,7 @@ const sortTable = (key: string) => {
   if (!key) return;
   sortKey.value = key;
   sortOrder.value = sortOrder.value === 'ASC' ? 'DESC' : 'ASC';
-  const header = props.headers.find((header) => header.name === key);
+  const header = props.data.find((header) => header.name === key);
   if (!header || !header.sortable) return;
 
   emits('sort', { sortKey: key, sortOrder: sortOrder.value });
