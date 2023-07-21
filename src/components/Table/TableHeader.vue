@@ -7,7 +7,12 @@
         v-bind:key="header.id"
         scope="col"
         :class="[
-          getClassForHeader(header.name),
+          {
+            'min-w-[300px]': header.key === 'description',
+            'w-[200px]': header.key === 'name' || header.key === 'editions',
+            'w-[100px]': header.key === 'id',
+            'w-[200px] whitespace-nowrap': header.key === 'timeOfCapture',
+          },
           'px-6 py-3 font-semibold tracking-wide cursor-pointer',
         ]"
         @click="sortTable(header.key)">
@@ -43,12 +48,6 @@ const props = defineProps({
 const emits = defineEmits<{
   (e: 'sort', payload: { sortKey: string; sortOrder: string }): void;
 }>();
-
-const getClassForHeader = (headerName: string) => {
-  if (headerName == 'Description') {
-    return 'w-1/2';
-  }
-};
 
 const sortTable = (key: string) => {
   if (!key) return;

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <div class="relative overflow-x-auto shadow-sm sm:rounded-lg border">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <TableHeader :data="headers" @sort="sortTable" />
       <tbody>
@@ -11,8 +11,8 @@
 
 <script setup lang="ts">
 import { defineComponent } from 'vue';
-import TableHeader from './Table/TableHeader.vue';
-import TableRow from './Table/TableRow.vue';
+import TableHeader from './TableHeader.vue';
+import TableRow from './TableRow.vue';
 import { FeatureItem } from '@/types';
 import { featuresTableHeader as headers } from '@/constants';
 

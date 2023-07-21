@@ -1,7 +1,6 @@
-import { Ref } from '@vue/reactivity';
-import { computed } from 'vue';
+import { Ref, computed } from 'vue';
 import { FeatureItem } from '@/types';
-
+import { parseDate } from '@/utils';
 export function useFeaturesSorting(
   arrayToSort: Ref<FeatureItem[]>,
   sortKey: Ref<string | null>,
@@ -32,6 +31,17 @@ export function useFeaturesSorting(
           return a.description.localeCompare(b.description);
         } else {
           return b.description.localeCompare(a.description);
+        }
+      };
+    } else if (sortKey.value === 'timeOfCapture') {
+      sortingFunction = (a, b) => {
+        const dateA = parseDate(a.timeOfCapture);
+        const dateB = parseDate(b.timeOfCapture);
+
+        if (sortOrder.value === 'ASC') {
+          return dateA.getTime() - dateB.getTime();
+        } else {
+          return dateB.getTime() - dateA.getTime();
         }
       };
     }

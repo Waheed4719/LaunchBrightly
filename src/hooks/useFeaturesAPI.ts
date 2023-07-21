@@ -1,6 +1,7 @@
+import { computed } from 'vue';
 // useFeaturesAPI.ts
 
-import { ref, Ref } from '@vue/reactivity';
+import { ref, Ref } from 'vue';
 import axios from 'axios';
 import { usePagination } from './usePagination';
 import { FeatureItem, Edition, Feature } from '@/types';
@@ -16,13 +17,36 @@ export function useFeaturesAPI(
   const featuresAreLoading = ref(false);
 
   // filter features array
+  const filterText: Ref<string> = ref<string>('');
   const filters = ref<string[]>([]);
-
+  const filteredFeatures = computed(() =>
+    features.value.filter((item: FeatureItem) => {
+      let flag = true;
+      if (filterText.value !== '' && filterText.value !== null) {
+        if (!item.name.toLowerCase().includes(filterText.value.toLowerCase())) {
+          flag = false;
+        }
+      }
+      if (filters.value.length === 0 && flag) {
+        return true;
+      } else {
+        return (
+          item.editions.some((edition) =>
+            filters.value.includes(edition.name)
+          ) && flag
+        );
+      }
+    })
+  );
   // sorting features array
   const sortKey = ref<string | null>(null);
   const sortOrder = ref<string | null>(null);
 
-  const arrayToPaginate = useFeaturesSorting(features, sortKey, sortOrder);
+  const arrayToPaginate = useFeaturesSorting(
+    filteredFeatures,
+    sortKey,
+    sortOrder
+  );
 
   // paginating features array
   const { paginatedArray, numberOfPages } = usePagination<FeatureItem>({
@@ -46,6 +70,7 @@ export function useFeaturesAPI(
             name: item.edition.name,
           })
         ),
+        timeOfCapture: item.screenshots.items[0]?.timeOfCapture,
       })) as FeatureItem[];
     } catch (err) {
       console.log(err);
@@ -60,6 +85,7 @@ export function useFeaturesAPI(
   };
 
   const filterFeatures = (payload: { filter: string }) => {
+    currentPage.value = 1;
     if (filters.value?.includes(payload.filter)) {
       filters.value = filters.value.filter(
         (item: string) => item !== payload.filter
@@ -75,6 +101,7 @@ export function useFeaturesAPI(
     sortKey,
     sortOrder,
     filters,
+    filterText,
     filterFeatures,
     loadFeatures,
     featuresAreLoading,

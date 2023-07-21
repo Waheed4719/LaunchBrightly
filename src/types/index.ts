@@ -22,7 +22,7 @@ export interface Feature {
   selector: string | null;
   takeScreenshot: string | null;
   filename: string | null;
-  screenshots: Screenshot[];
+  screenshots: { items: Screenshot[] };
   FeatureEditions: {
     items: { edition: Edition }[];
   };
@@ -33,6 +33,7 @@ export interface FeatureItem {
   name: string;
   description: string;
   editions: [{ id: string; name: string }];
+  timeOfCapture: string;
 }
 
 export interface Baremetrics {

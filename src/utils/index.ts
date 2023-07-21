@@ -16,6 +16,32 @@ export function debounce<T extends (...args: any[]) => any>(
   };
 }
 
+export const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // Adding 1 to get the correct month (0-indexed)
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  // You can format the date string in any way you like.
+  // Here's an example of formatting it as "YYYY-MM-DD HH:mm:ss"
+  const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(
+    day
+  ).padStart(2, '0')} ${String(hours).padStart(2, '0')}:${String(
+    minutes
+  ).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+  return formattedDate; // Use options for specific date and time formats
+};
+
+// Function to convert date strings to Date objects
+export const parseDate = (dateString: string): Date => {
+  return new Date(dateString);
+};
+
 export const getClassNameForEdition = (edition: string): string => {
   switch (edition.toLocaleLowerCase()) {
     case 'rev':

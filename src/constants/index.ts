@@ -19,8 +19,14 @@ export const featuresTableHeader = [
   },
   {
     id: 4,
+    key: 'timeOfCapture',
+    name: 'Time of Capture',
+    sortable: true,
+  },
+  {
+    id: 5,
     key: 'editions',
     name: 'Editions',
-    sortable: true,
+    sortable: false,
   },
 ];
