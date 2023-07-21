@@ -10,7 +10,7 @@
           getClassForHeader(header.name),
           'px-6 py-3 font-semibold tracking-wide cursor-pointer',
         ]"
-        @click="sortTable(header.name)">
+        @click="sortTable(header.key)">
         <div class="flex items-center">
           {{ header.name }}
           <a v-if="header.sortable" href="#"><SortIcon /></a>
@@ -22,12 +22,8 @@
 <script setup lang="ts">
 import { defineComponent, ref } from 'vue';
 import SortIcon from '../Icon/SortIcon.vue';
+import { Header } from '@/types';
 
-interface Header {
-  id: number;
-  name: string;
-  sortable: boolean;
-}
 defineComponent({
   name: 'TableHeader',
 });
@@ -58,10 +54,10 @@ const sortTable = (key: string) => {
   if (!key) return;
   sortKey.value = key;
   sortOrder.value = sortOrder.value === 'ASC' ? 'DESC' : 'ASC';
-  const header = props.data.find((header) => header.name === key);
+  const header = props.data.find((header) => header.key === key);
   if (!header || !header.sortable) return;
 
-  emits('sort', { sortKey: key, sortOrder: sortOrder.value });
+  emits('sort', { sortKey: sortKey.value, sortOrder: sortOrder.value });
 };
 </script>
 <style lang=""></style>

@@ -14,7 +14,8 @@
           'cursor-pointer tracking-wide p-1.5 uppercase text-xs font-semibold rounded-md bg-gray-200 dark:bg-gray-600 dark:text-gray-400 border',
         ]"
         v-for="edition in item.editions"
-        :key="edition.id">
+        :key="edition.id"
+        @click="addFilter(edition.name)">
         {{ edition.name }}
       </span>
     </TableCol>
@@ -22,9 +23,10 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import TableCol from './TableCol.vue';
 import { FeatureItem } from '@/types';
+import { getClassNameForEdition } from '@/utils';
 
 defineComponent({
   name: 'TableRow',
@@ -40,21 +42,11 @@ defineProps({
     default: () => [],
   },
 });
-
-const getClassNameForEdition = (edition: string): string => {
-  switch (edition.toLocaleLowerCase()) {
-    case 'rev':
-      return 'bg-red-200 dark:bg-red-600 dark:text-red-400 bg-opacity-50';
-    case 'arr metrics':
-      return 'bg-green-200 dark:bg-green-600 dark:text-green-400 bg-opacity-50';
-    case 'subs':
-      return 'bg-blue-200 dark:bg-blue-600 dark:text-blue-400 bg-opacity-50';
-    case 'mrr metrics':
-      return 'bg-yellow-200 dark:bg-yellow-600 dark:text-yellow-400 bg-opacity-50';
-    case 'control center':
-      return 'bg-purple-200 dark:bg-purple-600 dark:text-purple-400 bg-opacity-50';
-    default:
-      return '';
-  }
+const addFilter = (filter: string) => {
+  emits('filter', { filter });
 };
+
+const emits = defineEmits<{
+  (e: 'filter', payload: { filters: string[] }): void;
+}>();
 </script>

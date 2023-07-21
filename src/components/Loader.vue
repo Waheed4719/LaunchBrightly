@@ -1,9 +1,6 @@
 <template>
   <div class="lds-ellipsis">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div v-for="index in 4" :key="index"></div>
   </div>
 </template>
 <script setup lang="ts">

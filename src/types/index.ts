@@ -55,3 +55,10 @@ export interface Baremetrics {
     items: Feature[];
   };
 }
+
+export type Header = {
+  id: number;
+  key: string;
+  name: string;
+  sortable: boolean;
+};

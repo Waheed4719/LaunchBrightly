@@ -5,7 +5,7 @@ import axios from 'axios';
 import { usePagination } from './usePagination';
 import { FeatureItem, Edition, Feature } from '@/types';
 import { API_URL } from '@/config';
-import { useSorting } from './useSorting';
+import { useFeaturesSorting } from './useFeaturesSorting';
 
 export function useFeaturesAPI(
   currentPage: Ref<number>,
@@ -15,15 +15,23 @@ export function useFeaturesAPI(
 
   const featuresAreLoading = ref(false);
 
+  // filter features array
+  const filters = ref<string[]>([]);
+
+  // sorting features array
   const sortKey = ref<string | null>(null);
   const sortOrder = ref<string | null>(null);
 
+  const arrayToPaginate = useFeaturesSorting(features, sortKey, sortOrder);
+
+  // paginating features array
   const { paginatedArray, numberOfPages } = usePagination<FeatureItem>({
     rowsPerPage,
-    arrayToPaginate: useSorting(features, sortKey, sortOrder),
+    arrayToPaginate: arrayToPaginate,
     currentPage,
   });
 
+  // loading features from API
   const loadFeatures = async () => {
     featuresAreLoading.value = true;
     try {
@@ -51,14 +59,53 @@ export function useFeaturesAPI(
     sortOrder.value = payload.sortOrder;
   };
 
-  console.log('here', paginatedArray.value);
+  const filterFeatures = (payload: { filter: string }) => {
+    if (filters.value?.includes(payload.filter)) {
+      filters.value = filters.value.filter(
+        (item: string) => item !== payload.filter
+      );
+    } else {
+      filters.value.push(payload.filter);
+    }
+  };
+
   return {
     features: paginatedArray,
     sortFeatures,
     sortKey,
     sortOrder,
+    filters,
+    filterFeatures,
     loadFeatures,
     featuresAreLoading,
     numberOfPages,
   };
 }
+
+// let sortingFunction: ((a: FeatureItem, b: FeatureItem) => number) | null =
+//   null;
+// if (sortKey === 'id') {
+//   sortingFunction = (a, b) => {
+//     if (sortOrder === 'ASC') {
+//       return a.id.localeCompare(b.id);
+//     } else {
+//       return b.id.localeCompare(a.id);
+//     }
+//   };
+// } else if (sortKey === 'name') {
+//   sortingFunction = (a, b) => {
+//     if (sortOrder === 'ASC') {
+//       return a.name.localeCompare(b.name);
+//     } else {
+//       return b.name.localeCompare(a.name);
+//     }
+//   };
+// } else if (sortKey === 'description') {
+//   sortingFunction = (a, b) => {
+//     if (sortOrder === 'ASC') {
+//       return a.description.localeCompare(b.description);
+//     } else {
+//       return b.description.localeCompare(a.description);
+//     }
+//   };
+// }

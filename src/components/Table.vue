@@ -3,7 +3,7 @@
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <TableHeader :data="headers" @sort="sortTable" />
       <tbody>
-        <TableRow :data="data" />
+        <TableRow :data="data" @filter="filterTable" />
       </tbody>
     </table>
   </div>
@@ -14,6 +14,7 @@ import { defineComponent } from 'vue';
 import TableHeader from './Table/TableHeader.vue';
 import TableRow from './Table/TableRow.vue';
 import { FeatureItem } from '@/types';
+import { featuresTableHeader as headers } from '@/constants';
 
 defineComponent({
   name: 'TableComponent',
@@ -30,39 +31,23 @@ defineProps({
   },
 });
 
-type Header = {
-  id: number;
-  name: string;
-  sortable: boolean;
-};
-
-const headers: Header[] = [
-  {
-    id: 1,
-    name: 'Id',
-    sortable: true,
-  },
-  {
-    id: 2,
-    name: 'Name',
-    sortable: true,
-  },
-  {
-    id: 3,
-    name: 'Description',
-    sortable: true,
-  },
-  {
-    id: 4,
-    name: 'Editions',
-    sortable: true,
-  },
-];
 const emits = defineEmits<{
-  (e: 'sort', payload: { sortKey: string; sortOrder: string }): void;
+  (
+    e: 'sort',
+    payload: {
+      sortKey: string;
+      sortOrder: string;
+      sortingFunction?: ((a: FeatureItem, b: FeatureItem) => number) | null;
+    }
+  ): void;
+  (e: 'filter', payload: { filter: string }): void;
 }>();
 
 const sortTable = (payload: { sortKey: string; sortOrder: string }) => {
   emits('sort', payload);
+};
+
+const filterTable = (payload: { filter: string }) => {
+  emits('filter', payload);
 };
 </script>
