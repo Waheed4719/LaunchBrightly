@@ -8,10 +8,10 @@ import { FeatureItem, Edition, Feature } from '@/types';
 import { API_URL } from '@/config';
 import { useFeaturesSorting } from './useFeaturesSorting';
 
-export function useFeaturesAPI(
+export const useFeaturesAPI = (
   currentPage: Ref<number>,
   rowsPerPage?: Ref<number>
-) {
+) => {
   const features: Ref<FeatureItem[]> = ref([]);
 
   const featuresAreLoading = ref(false);
@@ -39,8 +39,8 @@ export function useFeaturesAPI(
     })
   );
   // sorting features array
-  const sortKey = ref<string | null>(null);
-  const sortOrder = ref<string | null>(null);
+  const sortKey = ref<string>('');
+  const sortOrder = ref<string>('');
 
   const arrayToPaginate = useFeaturesSorting(
     filteredFeatures,
@@ -107,7 +107,7 @@ export function useFeaturesAPI(
     featuresAreLoading,
     numberOfPages,
   };
-}
+};
 
 // let sortingFunction: ((a: FeatureItem, b: FeatureItem) => number) | null =
 //   null;

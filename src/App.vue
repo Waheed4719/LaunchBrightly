@@ -1,49 +1,21 @@
 <template>
-  <div class="max-w-full w-[1500px] mx-auto px-4">
-    <div v-if="featuresAreLoading"><Loader /></div>
+  <div class="max-w-full w-[1500px] mx-auto px-4 min-h-screen">
+    <div
+      v-if="featuresAreLoading"
+      class="flex items-center justify-center flex-col h-screen w-full">
+      <Loader />
+    </div>
     <div v-else>
-      <div class="flex justify-between items-center my-2 gap-4 flex-wrap">
-        <div class="flex gap-4">
-          <div class="flex items-center gap-3">
-            <h1 class="font-bold">Sort:</h1>
-            <div
-              v-if="sortKey"
-              class="text-sm font-semibold text-gray-500 uppercase">
-              {{ sortKey }} - ({{ sortOrder }})
-            </div>
-            <div
-              v-else
-              class="text-[14px] font-semibold text-gray-500 uppercase">
-              N/A
-            </div>
-          </div>
-          <div class="flex items-center gap-3">
-            <h1 class="font-bold">Edition Filters:</h1>
-            <ul v-if="filters.length" class="flex gap-2">
-              <span
-                @click="filterFeatures({ filter })"
-                :class="[
-                  getClassNameForEdition(filter),
-                  'cursor-pointer tracking-wide px-1.5 py-[5px] uppercase text-xs font-semibold rounded-md bg-gray-200 dark:bg-gray-600 dark:text-gray-400 border flex gap-2 items-center',
-                ]"
-                v-for="filter in filters"
-                v-bind:key="filter">
-                {{ filter }}
-
-                <CloseIcon />
-              </span>
-            </ul>
-            <div
-              v-else
-              class="text-[14px] font-semibold text-gray-500 uppercase">
-              N/A
-            </div>
-          </div>
-        </div>
-
-        <SearchBar @changeText="debouncedSearch" />
-      </div>
-
+      <img
+        class="w-[250px] md:w-[450px] mx-auto"
+        src="./assets/images/launchbrightly-logo.png"
+        alt="Launch Brightly Logo" />
+      <Header
+        @search="debouncedSearch"
+        :sortKey="sortKey"
+        :sortOrder="sortOrder"
+        :filters="filters"
+        @filter="filterFeatures" />
       <Table :data="features" @sort="sortFeatures" @filter="filterFeatures" />
       <Pagination
         class="pagination-component"
@@ -60,17 +32,16 @@ import Table from '@/components/Table/Table.vue';
 import Loader from '@/components/Loader.vue';
 import { useFeaturesAPI } from '@/hooks/useFeaturesAPI';
 import Pagination from '@/components/Pagination.vue';
-import CloseIcon from '@/components/Icon/CloseIcon.vue';
-import { getClassNameForEdition, debounce } from '@/utils';
-import SearchBar from '@/components/SearchBar.vue';
+import { debounce } from '@/utils';
+import Header from './components/Header.vue';
 
 defineComponent({
   name: 'App',
   components: {
-    Table,
     Loader,
+    Table,
     Pagination,
-    SearchBar,
+    Header,
   },
 });
 const currentPage = ref(1);
@@ -110,6 +81,5 @@ const debouncedSearch = debounce((payload) => {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

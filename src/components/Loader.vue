@@ -1,4 +1,8 @@
 <template>
+  <img
+    class="w-[250px] md:w-[450px] mx-auto"
+    src="../assets/images/launchbrightly-logo.png"
+    alt="Launch Brightly Logo" />
   <div class="lds-ellipsis">
     <div v-for="index in 4" :key="index"></div>
   </div>
@@ -24,7 +28,8 @@ defineComponent({
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background-color: gray;
+  background-color: #4f46e5;
+  opacity: 0.8;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 .lds-ellipsis div:nth-child(1) {
