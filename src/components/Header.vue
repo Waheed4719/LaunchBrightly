@@ -12,9 +12,9 @@
           N/A
         </div>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 flex-wrap">
         <h1 class="font-bold">Edition Filters:</h1>
-        <ul v-if="filters.length" class="flex gap-2">
+        <ul v-if="filters.length" class="flex gap-2 flex-wrap">
           <span
             @click="filterFeatures({ filter })"
             :class="[
