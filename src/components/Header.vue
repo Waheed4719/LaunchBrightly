@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-between items-center my-2 gap-4 flex-wrap">
-    <div class="flex gap-4">
+  <div class="flex justify-between items-center my-2 mt-5 gap-4 flex-wrap">
+    <div class="flex-col md:flex-row flex gap-4 w-full md:w-fit">
       <div class="flex items-center gap-3">
         <h1 class="font-bold">Sort:</h1>
         <div

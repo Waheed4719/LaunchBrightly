@@ -6,10 +6,17 @@
       <Loader />
     </div>
     <div v-else>
-      <img
-        class="w-[250px] md:w-[450px] mx-auto"
-        src="./assets/images/launchbrightly-logo.png"
-        alt="Launch Brightly Logo" />
+      <div class="relative">
+        <img
+          class="w-[250px] md:w-[450px] mx-auto"
+          src="./assets/images/launchbrightly-logo.png"
+          alt="Launch Brightly Logo" />
+        <h3
+          class="text-lg md:text-2xl absolute top-[60%] left-[50%] translate-y-[50%] translate-x-[-50%]">
+          Assessment
+        </h3>
+      </div>
+
       <Header
         @search="debouncedSearch"
         :sortKey="sortKey"

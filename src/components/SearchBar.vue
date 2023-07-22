@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center w-[250px] relative">
+  <div class="flex items-center w-full md:w-[250px] relative">
     <input
       placeholder="Search by Name"
       v-model="searchText"
