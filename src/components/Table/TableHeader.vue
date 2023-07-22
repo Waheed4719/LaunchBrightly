@@ -11,7 +11,8 @@
             'min-w-[300px]': header.key === 'description',
             'w-[200px]': header.key === 'name' || header.key === 'editions',
             'w-[100px]': header.key === 'id',
-            'w-[200px] whitespace-nowrap': header.key === 'timeOfCapture',
+            'w-[200px] min-w-[200px] whitespace-nowrap':
+              header.key === 'timeOfCapture',
           },
           'px-6 py-3 font-semibold tracking-wide cursor-pointer',
         ]"
@@ -31,6 +32,9 @@ import { Header } from '@/types';
 
 defineComponent({
   name: 'TableHeader',
+  components: {
+    SortIcon,
+  },
 });
 const sortKey = ref('');
 const sortOrder = ref('ASC');
@@ -46,7 +50,10 @@ const props = defineProps({
 });
 
 const emits = defineEmits<{
-  (e: 'sort', payload: { sortKey: string; sortOrder: string }): void;
+  (
+    e: 'sort',
+    payload: { sortKey: string; sortOrder: string; sortName: string }
+  ): void;
 }>();
 
 const sortTable = (key: string) => {
@@ -56,7 +63,11 @@ const sortTable = (key: string) => {
   const header = props.data.find((header) => header.key === key);
   if (!header || !header.sortable) return;
 
-  emits('sort', { sortKey: sortKey.value, sortOrder: sortOrder.value });
+  emits('sort', {
+    sortKey: sortKey.value,
+    sortOrder: sortOrder.value,
+    sortName: header.name,
+  });
 };
 </script>
 <style lang=""></style>

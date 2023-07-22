@@ -21,6 +21,7 @@
         @search="debouncedSearch"
         :sortKey="sortKey"
         :sortOrder="sortOrder"
+        :sortName="sortName"
         :filters="filters"
         @filter="filterFeatures" />
       <Table :data="features" @sort="sortFeatures" @filter="filterFeatures" />
@@ -61,11 +62,11 @@ const {
   sortFeatures,
   sortKey,
   sortOrder,
+  sortName,
   filters,
   filterText,
   filterFeatures,
 } = useFeaturesAPI(currentPage, rowsPerPage);
-
 onMounted(async () => {
   document.title = 'Launch Brightly Assessment';
   await loadFeatures();

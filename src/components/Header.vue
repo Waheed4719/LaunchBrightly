@@ -6,7 +6,7 @@
         <div
           v-if="sortKey"
           class="text-sm font-semibold text-gray-500 uppercase">
-          {{ sortKey }} - ({{ sortOrder }})
+          {{ sortName }} - ({{ sortOrder }})
         </div>
         <div v-else class="text-[14px] font-semibold text-gray-500 uppercase">
           N/A
@@ -58,6 +58,11 @@ defineProps({
     default: '',
   },
   sortOrder: {
+    type: String,
+    required: false,
+    default: '',
+  },
+  sortName: {
     type: String,
     required: false,
     default: '',

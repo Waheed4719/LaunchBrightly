@@ -41,6 +41,7 @@ export const useFeaturesAPI = (
   // sorting features array
   const sortKey = ref<string>('');
   const sortOrder = ref<string>('');
+  const sortName = ref<string>('');
 
   const arrayToPaginate = useFeaturesSorting(
     filteredFeatures,
@@ -79,9 +80,14 @@ export const useFeaturesAPI = (
     }
   };
 
-  const sortFeatures = (payload: { sortKey: string; sortOrder: string }) => {
+  const sortFeatures = (payload: {
+    sortKey: string;
+    sortOrder: string;
+    sortName: string;
+  }) => {
     sortKey.value = payload.sortKey;
     sortOrder.value = payload.sortOrder;
+    sortName.value = payload.sortName;
   };
 
   const filterFeatures = (payload: { filter: string }) => {
@@ -100,6 +106,7 @@ export const useFeaturesAPI = (
     sortFeatures,
     sortKey,
     sortOrder,
+    sortName,
     filters,
     filterText,
     filterFeatures,
@@ -108,31 +115,3 @@ export const useFeaturesAPI = (
     numberOfPages,
   };
 };
-
-// let sortingFunction: ((a: FeatureItem, b: FeatureItem) => number) | null =
-//   null;
-// if (sortKey === 'id') {
-//   sortingFunction = (a, b) => {
-//     if (sortOrder === 'ASC') {
-//       return a.id.localeCompare(b.id);
-//     } else {
-//       return b.id.localeCompare(a.id);
-//     }
-//   };
-// } else if (sortKey === 'name') {
-//   sortingFunction = (a, b) => {
-//     if (sortOrder === 'ASC') {
-//       return a.name.localeCompare(b.name);
-//     } else {
-//       return b.name.localeCompare(a.name);
-//     }
-//   };
-// } else if (sortKey === 'description') {
-//   sortingFunction = (a, b) => {
-//     if (sortOrder === 'ASC') {
-//       return a.description.localeCompare(b.description);
-//     } else {
-//       return b.description.localeCompare(a.description);
-//     }
-//   };
-// }
