@@ -44,14 +44,11 @@ export const useFeaturesAPI = (
     filter: Edition | Edition[];
     multiple?: boolean;
   }) => {
-    console.log(payload);
     currentPage.value = 1;
     const { filter, multiple = true } = payload;
     if (multiple && Array.isArray(filter)) {
-      console.log('gettin in here');
       filters.value = [...filter];
     } else if (!Array.isArray(filter)) {
-      console.log('gettin in here 2');
       const foundIndex = filters.value.findIndex(
         (item) => item.name === filter.name
       );

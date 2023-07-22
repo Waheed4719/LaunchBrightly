@@ -22,7 +22,7 @@
         </div>
         <ul
           v-if="filters.length"
-          class="flex gap-2 flex-wrap max-w-[650px] overflow-auto pb-2">
+          class="flex gap-2 flex-wrap max-w-[550px] overflow-auto pb-2">
           <span
             @click="filterFeatures({ filter, multiple: false })"
             :class="[
@@ -47,7 +47,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import Multiselect from './MultiDropdown.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import CloseIcon from '@/components/Icon/CloseIcon.vue';

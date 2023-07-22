@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[300px]">
+  <div class="w-[300px]" ref="multidropdown">
     <div class="relative">
       <button
         type="button"
@@ -25,7 +25,6 @@
       <ul
         v-if="isOpen"
         ref="dropdownList"
-        @keydown.enter.stop.prevent="selectOption(selectedIndex)"
         class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
         tabindex="-1"
         role="listbox"
@@ -69,10 +68,10 @@
 <script setup lang="ts">
 import { DropdownOption } from '@/types';
 
-import { ref, Ref, watch, onUpdated, computed } from 'vue';
+import { ref, Ref, watch } from 'vue';
 import DropdownIcon from './Icon/DropdownIcon.vue';
 import CheckmarkIcon from './Icon/CheckmarkIcon.vue';
-
+import { ClickawayListener } from './ClickawayComponent';
 const labelId =
   'multi-dropdown-label-' + Math.random().toString(36).substr(2, 9);
 
@@ -80,6 +79,7 @@ const isOpen = ref(false);
 const selectedIndexes = ref<number[]>([]); // Store an array of selected indexes
 
 const dropdownList: Ref<HTMLElement | null> = ref(null);
+const multidropdown: Ref<HTMLElement | null> = ref(null);
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
@@ -142,13 +142,7 @@ watch(
   }
 );
 
-onUpdated(() => {
-  selectedIndexes.value = props.modelValue.map((option) =>
-    props.options.findIndex((item) => item.id === option.id)
-  ); // Keep the selectedIndexes in sync with the modelValue prop after each update.
+ClickawayListener(multidropdown, () => {
+  isOpen.value = false;
 });
-
-// const selectedOptions = computed(() => {
-//   return selectedIndexes.value.map((idx) => props.options[idx]);
-// });
 </script>
