@@ -1,5 +1,13 @@
 import { defineComponent } from 'vue';
 
+/**
+ * Creates a debounced version of the provided function.
+ *
+ * @template T The type of the original callback function.
+ * @param {T} callback The original callback function to be debounced.
+ * @param {number} delay The delay in milliseconds to wait before calling the callback after the last invocation.
+ * @returns {(...args: Parameters<T>) => void} The debounced version of the callback function.
+ */
 export function debounce<T extends (...args: any[]) => any>(
   callback: T,
   delay: number
@@ -16,6 +24,12 @@ export function debounce<T extends (...args: any[]) => any>(
   };
 }
 
+/**
+ * Formats a date string into a human-readable date format.
+ *
+ * @param {string} dateString The date string to be formatted.
+ * @returns {string} The formatted date in the "DD-MM-YYYY HH:mm:ss" format.
+ */
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
 
@@ -26,22 +40,32 @@ export const formatDate = (dateString: string) => {
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
 
-  // You can format the date string in any way you like.
-  // Here's an example of formatting it as "YYYY-MM-DD HH:mm:ss"
-  const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(
-    day
-  ).padStart(2, '0')} ${String(hours).padStart(2, '0')}:${String(
-    minutes
-  ).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  const formattedDate = `${String(day).padStart(2, '0')}-${String(
+    month
+  ).padStart(2, '0')}-${String(year).padStart(2, '0')} ${String(hours).padStart(
+    2,
+    '0'
+  )}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-  return formattedDate; // Use options for specific date and time formats
+  return formattedDate;
 };
 
-// Function to convert date strings to Date objects
+/**
+ * Converts a date string into a JavaScript Date object.
+ *
+ * @param {string} dateString The date string to be converted into a Date object.
+ * @returns {Date} The JavaScript Date object representing the parsed date.
+ */
 export const parseDate = (dateString: string): Date => {
   return new Date(dateString);
 };
 
+/**
+ * Returns the CSS class name for the given edition.
+ *
+ * @param {string} edition The edition for which the CSS class name is needed.
+ * @returns {string} The CSS class name corresponding to the given edition.
+ */
 export const getClassNameForEdition = (edition: string): string => {
   switch (edition.toLocaleLowerCase()) {
     case 'rev':

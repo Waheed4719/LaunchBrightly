@@ -43,7 +43,6 @@ const emits = defineEmits<{
       sortKey: string;
       sortOrder: string;
       sortName: string;
-      sortingFunction?: ((a: FeatureItem, b: FeatureItem) => number) | null;
     }
   ): void;
   (e: 'filter', payload: { filter: string }): void;

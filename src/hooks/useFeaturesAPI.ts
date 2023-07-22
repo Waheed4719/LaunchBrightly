@@ -4,7 +4,8 @@ import axios from 'axios';
 import { usePagination } from './usePagination';
 import { FeatureItem, Edition, Feature } from '@/types';
 import { API_URL } from '@/config';
-import { useFeaturesSorting } from './useFeaturesSorting';
+import { useSorting } from './useSorting';
+import { parseDate } from '@/utils';
 
 export const useFeaturesAPI = (
   currentPage: Ref<number>,
@@ -41,10 +42,35 @@ export const useFeaturesAPI = (
   const sortOrder = ref<string>('');
   const sortName = ref<string>('');
 
-  const arrayToPaginate = useFeaturesSorting(
+  const sortingFunction = (a: FeatureItem, b: FeatureItem) => {
+    if (sortKey.value === 'timeOfCapture') {
+      const dateA = parseDate(a.timeOfCapture);
+      const dateB = parseDate(b.timeOfCapture);
+
+      if (sortOrder.value === 'ASC') {
+        return dateA.getTime() - dateB.getTime();
+      } else {
+        return dateB.getTime() - dateA.getTime();
+      }
+    } else if (
+      sortKey.value === 'id' ||
+      sortKey.value === 'name' ||
+      sortKey.value === 'description'
+    ) {
+      if (sortOrder.value === 'ASC') {
+        return a[sortKey.value].localeCompare(b[sortKey.value]);
+      } else {
+        return b[sortKey.value].localeCompare(a[sortKey.value]);
+      }
+    }
+    return 0;
+  };
+
+  const arrayToPaginate = useSorting(
     filteredFeatures,
     sortKey,
-    sortOrder
+    sortOrder,
+    sortingFunction
   );
 
   // paginating features array
