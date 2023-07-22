@@ -6,6 +6,11 @@
         <TableRow :data="data" @filter="filterTable" :filters="filters" />
       </tbody>
     </table>
+    <div
+      v-if="!data.length"
+      class="flex text-center items-center justify-center h-[53px]">
+      No Data Found!
+    </div>
   </div>
 </template>
 
