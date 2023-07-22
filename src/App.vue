@@ -24,7 +24,11 @@
         :sortName="sortName"
         :filters="filters"
         @filter="filterFeatures" />
-      <Table :data="features" @sort="sortFeatures" @filter="filterFeatures" />
+      <Table
+        :data="features"
+        @sort="sortFeatures"
+        @filter="filterFeatures"
+        :filters="filters" />
       <Pagination
         class="pagination-component"
         :currentPage="currentPage"

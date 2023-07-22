@@ -36,10 +36,15 @@ defineComponent({
   },
 });
 
-defineProps({
+const props = defineProps({
   data: {
     type: Array as () => FeatureItem[],
     required: true,
+    default: () => [],
+  },
+  filters: {
+    type: Array as () => string[],
+    required: false,
     default: () => [],
   },
 });
@@ -49,6 +54,7 @@ const emits = defineEmits<{
 }>();
 
 const addFilter = (filter: string) => {
+  if (props.filters.includes(filter)) return;
   emits('filter', { filter });
 };
 </script>

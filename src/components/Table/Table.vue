@@ -3,7 +3,7 @@
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <TableHeader :data="headers" @sort="sortTable" />
       <tbody>
-        <TableRow :data="data" @filter="filterTable" />
+        <TableRow :data="data" @filter="filterTable" :filters="filters" />
       </tbody>
     </table>
   </div>
@@ -28,6 +28,11 @@ defineProps({
   data: {
     type: Array as () => FeatureItem[],
     required: true,
+  },
+  filters: {
+    type: Array as () => string[],
+    required: false,
+    default: () => [],
   },
 });
 
