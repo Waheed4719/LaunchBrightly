@@ -1,6 +1,4 @@
 import { computed } from 'vue';
-// useFeaturesAPI.ts
-
 import { ref, Ref } from 'vue';
 import axios from 'axios';
 import { usePagination } from './usePagination';
@@ -115,3 +113,31 @@ export const useFeaturesAPI = (
     numberOfPages,
   };
 };
+
+// let sortingFunction: ((a: FeatureItem, b: FeatureItem) => number) | null =
+//   null;
+// if (sortKey === 'id') {
+//   sortingFunction = (a, b) => {
+//     if (sortOrder === 'ASC') {
+//       return a.id.localeCompare(b.id);
+//     } else {
+//       return b.id.localeCompare(a.id);
+//     }
+//   };
+// } else if (sortKey === 'name') {
+//   sortingFunction = (a, b) => {
+//     if (sortOrder === 'ASC') {
+//       return a.name.localeCompare(b.name);
+//     } else {
+//       return b.name.localeCompare(a.name);
+//     }
+//   };
+// } else if (sortKey === 'description') {
+//   sortingFunction = (a, b) => {
+//     if (sortOrder === 'ASC') {
+//       return a.description.localeCompare(b.description);
+//     } else {
+//       return b.description.localeCompare(a.description);
+//     }
+//   };
+// }

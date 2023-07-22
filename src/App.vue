@@ -79,6 +79,7 @@ const navigateToPage = (page: number) => {
 //debounced text search by "name" field
 const debouncedSearch = debounce((payload) => {
   filterText.value = payload.searchText;
+  currentPage.value = 1;
 }, 300);
 </script>
 
