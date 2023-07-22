@@ -16,7 +16,7 @@
         ]"
         v-for="edition in item.editions"
         :key="edition.id"
-        @click="addFilter(edition.name)">
+        @click="addFilter(edition)">
         {{ edition.name }}
       </span>
     </TableCol>
@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { defineComponent } from 'vue';
 import TableCol from './TableCol.vue';
-import { FeatureItem } from '@/types';
+import { FeatureItem, Edition } from '@/types';
 import { getClassNameForEdition, formatDate } from '@/utils';
 
 defineComponent({
@@ -43,18 +43,22 @@ const props = defineProps({
     default: () => [],
   },
   filters: {
-    type: Array as () => string[],
+    type: Array as () => Edition[],
     required: false,
     default: () => [],
   },
 });
 
 const emits = defineEmits<{
-  (e: 'filter', payload: { filter: string }): void;
+  (e: 'filter', payload: { filter: Edition; multiple?: boolean }): void;
 }>();
 
-const addFilter = (filter: string) => {
-  if (props.filters.includes(filter)) return;
-  emits('filter', { filter });
+const addFilter = (filter: Edition) => {
+  const isFilterPresent = props.filters.some(
+    (existingFilter: Edition) => existingFilter.id === filter.id
+  );
+  if (!isFilterPresent) {
+    emits('filter', { filter, multiple: false });
+  }
 };
 </script>

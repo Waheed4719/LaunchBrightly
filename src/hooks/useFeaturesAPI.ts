@@ -11,32 +11,61 @@ export const useFeaturesAPI = (
   currentPage: Ref<number>,
   rowsPerPage?: Ref<number>
 ) => {
-  const features: Ref<FeatureItem[]> = ref([]);
+  const features: Ref<FeatureItem[]> = ref<FeatureItem[]>([]);
+  const editions: Ref<Edition[]> = ref<Edition[]>([]);
 
   const featuresAreLoading = ref(false);
 
   // filter features array
   const filterText: Ref<string> = ref<string>('');
-  const filters = ref<string[]>([]);
+  const filters = ref<Edition[]>([]);
   const filteredFeatures = computed(() =>
     features.value.filter((item: FeatureItem) => {
       let flag = true;
       if (filterText.value !== '' && filterText.value !== null) {
-        if (!item.name.toLowerCase().includes(filterText.value.toLowerCase())) {
+        if (
+          !item.name.toLowerCase().startsWith(filterText.value.toLowerCase())
+        ) {
           flag = false;
         }
       }
       if (filters.value.length === 0 && flag) {
         return true;
       } else {
-        return (
-          item.editions.some((edition) =>
-            filters.value.includes(edition.name)
-          ) && flag
+        const isItemMatchingFilter = item.editions.some((edition) =>
+          filters.value.map((filter) => filter.name).includes(edition.name)
         );
+        return isItemMatchingFilter && flag;
       }
     })
   );
+
+  const filterFeatures = (payload: {
+    filter: Edition | Edition[];
+    multiple?: boolean;
+  }) => {
+    console.log(payload);
+    currentPage.value = 1;
+    const { filter, multiple = true } = payload;
+    if (multiple && Array.isArray(filter)) {
+      console.log('gettin in here');
+      filters.value = [...filter];
+    } else if (!Array.isArray(filter)) {
+      console.log('gettin in here 2');
+      const foundIndex = filters.value.findIndex(
+        (item) => item.name === filter.name
+      );
+
+      if (foundIndex !== -1) {
+        filters.value = filters.value.filter(
+          (item) => item.name !== filter.name
+        );
+      } else {
+        filters.value.push(filter);
+      }
+    }
+  };
+
   // sorting features array
   const sortKey = ref<string>('');
   const sortOrder = ref<string>('');
@@ -64,6 +93,16 @@ export const useFeaturesAPI = (
       }
     }
     return 0;
+  };
+
+  const sortFeatures = (payload: {
+    sortKey: string;
+    sortOrder: string;
+    sortName: string;
+  }) => {
+    sortKey.value = payload.sortKey;
+    sortOrder.value = payload.sortOrder;
+    sortName.value = payload.sortName;
   };
 
   const arrayToPaginate = useSorting(
@@ -97,6 +136,11 @@ export const useFeaturesAPI = (
         ),
         timeOfCapture: item.screenshots.items[0]?.timeOfCapture,
       })) as FeatureItem[];
+
+      editions.value = response.data.editions.items.map((item: Edition) => ({
+        id: item.id,
+        name: item.name,
+      })) as Edition[];
     } catch (err) {
       console.log(err);
     } finally {
@@ -104,29 +148,9 @@ export const useFeaturesAPI = (
     }
   };
 
-  const sortFeatures = (payload: {
-    sortKey: string;
-    sortOrder: string;
-    sortName: string;
-  }) => {
-    sortKey.value = payload.sortKey;
-    sortOrder.value = payload.sortOrder;
-    sortName.value = payload.sortName;
-  };
-
-  const filterFeatures = (payload: { filter: string }) => {
-    currentPage.value = 1;
-    if (filters.value?.includes(payload.filter)) {
-      filters.value = filters.value.filter(
-        (item: string) => item !== payload.filter
-      );
-    } else {
-      filters.value.push(payload.filter);
-    }
-  };
-
   return {
     features: paginatedArray,
+    editions,
     sortFeatures,
     sortKey,
     sortOrder,

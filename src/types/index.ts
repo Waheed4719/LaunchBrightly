@@ -1,7 +1,7 @@
 export interface Edition {
   id: string;
   name: string;
-  description: string;
+  description?: string;
 }
 
 interface Screenshot {
@@ -62,4 +62,9 @@ export type Header = {
   key: string;
   name: string;
   sortable: boolean;
+};
+
+export type DropdownOption = {
+  id: string;
+  name: string;
 };

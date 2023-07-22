@@ -23,6 +23,7 @@
         :sortOrder="sortOrder"
         :sortName="sortName"
         :filters="filters"
+        :editions="editions"
         @filter="filterFeatures" />
       <Table
         :data="features"
@@ -61,6 +62,7 @@ const rowsPerPage = ref(10);
 const {
   features,
   featuresAreLoading,
+  editions,
   loadFeatures,
   numberOfPages,
   sortFeatures,

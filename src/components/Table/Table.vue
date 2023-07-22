@@ -18,7 +18,7 @@
 import { defineComponent } from 'vue';
 import TableHeader from './TableHeader.vue';
 import TableRow from './TableRow.vue';
-import { FeatureItem } from '@/types';
+import { FeatureItem, Edition } from '@/types';
 import { featuresTableHeader as headers } from '@/constants';
 
 defineComponent({
@@ -35,7 +35,7 @@ defineProps({
     required: true,
   },
   filters: {
-    type: Array as () => string[],
+    type: Array as () => Edition[],
     required: false,
     default: () => [],
   },
