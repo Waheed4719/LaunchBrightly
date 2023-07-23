@@ -8,7 +8,7 @@ import { defineComponent } from 'vue';
  * @param {number} delay The delay in milliseconds to wait before calling the callback after the last invocation.
  * @returns {(...args: Parameters<T>) => void} The debounced version of the callback function.
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   callback: T,
   delay: number
 ): (...args: Parameters<T>) => void {

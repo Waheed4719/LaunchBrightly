@@ -107,6 +107,7 @@ const props = defineProps({
   },
 });
 const emits = defineEmits({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   change: (options: DropdownOption[]) => true,
 });
 
@@ -117,12 +118,10 @@ const isSelected = (index: number) => {
 const selectOption = (index: number) => {
   if (index >= 0 && index < props.options.length) {
     if (isSelected(index)) {
-      // If already selected, deselect the option
       selectedIndexes.value = selectedIndexes.value.filter(
         (idx) => idx !== index
       );
     } else {
-      // If not selected, add to selected options
       selectedIndexes.value = [...selectedIndexes.value, index];
     }
   }
