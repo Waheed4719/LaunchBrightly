@@ -50,7 +50,10 @@ const emits = defineEmits<{
       sortName: string;
     }
   ): void;
-  (e: 'filter', payload: { filter: string }): void;
+  (
+    e: 'filter',
+    payload: { filter: Edition[] | Edition; multiple?: boolean }
+  ): void;
 }>();
 
 const sortTable = (payload: {
@@ -61,7 +64,10 @@ const sortTable = (payload: {
   emits('sort', payload);
 };
 
-const filterTable = (payload: { filter: string }) => {
+const filterTable = (payload: {
+  filter: Edition[] | Edition;
+  multiple?: boolean;
+}) => {
   emits('filter', payload);
 };
 </script>

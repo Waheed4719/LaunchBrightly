@@ -58,7 +58,7 @@ export const useFeaturesAPI = (
           (item) => item.name !== filter.name
         );
       } else {
-        filters.value.push(filter);
+        filters.value = [...filters.value, filter];
       }
     }
   };
