@@ -38,10 +38,6 @@
             'text-gray-900': !isSelected(index),
           }"
           @click="selectOption(index)"
-          @keydown.down.prevent="focusOption(index + 1)"
-          @keydown.up.prevent="focusOption(index - 1)"
-          @keydown.home.prevent="focusOption(0)"
-          @keydown.end.prevent="focusOption(options.length - 1)"
           class="select-none py-2 pl-3 pr-9 relative hover:bg-gray-200 cursor-pointer"
           role="option">
           <div class="flex items-center">
@@ -85,15 +81,6 @@ const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
 };
 
-const focusOption = (index: number) => {
-  if (dropdownList.value) {
-    const options = dropdownList.value.querySelectorAll('[role="option"]');
-    if (index >= 0 && index < options.length) {
-      const optionElement = options[index] as HTMLElement;
-      optionElement.focus();
-    }
-  }
-};
 const props = defineProps({
   options: {
     type: Array as () => DropdownOption[],
